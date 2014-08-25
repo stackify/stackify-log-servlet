@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/stackify/stackify-log-servlet.png)](https://travis-ci.org/stackify/stackify-log-servlet)
 [![Coverage Status](https://coveralls.io/repos/stackify/stackify-log-servlet/badge.png?branch=master)](https://coveralls.io/r/stackify/stackify-log-servlet?branch=master)
 
-This project contains J2EE and JAXRS servlet filters for capturing web request details that will be attached to log messages that you send to Stackify. 
+This project contains J2EE and JAX-RS servlet filters for capturing web request details that will be attached to log messages that you send to Stackify. 
 
 Error Logging and Monitoring Overview:
 
@@ -58,7 +58,7 @@ Add the StackifyLogFilter servlet filter and mapping to the web-app element in y
 </web-app>
 ```
 
-## Jersey Servlet Usage
+## JAX-RS Servlet Usage
 
 Add the StackifyLogFilter servlet filter to the servlet element in your web.xml file.
 
@@ -73,7 +73,7 @@ Add the StackifyLogFilter servlet filter to the servlet element in your web.xml 
 </servlet>
 ```
 
-Note: *This will only work with Jersey >= version 2.4 because of the following bug:*
+Jersey Note: *This will only work with Jersey >= version 2.4 because of the following bug:*
 - https://java.net/jira/browse/JERSEY-1960.
 
 ## Installation
