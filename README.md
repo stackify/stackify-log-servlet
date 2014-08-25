@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/stackify/stackify-log-servlet.png)](https://travis-ci.org/stackify/stackify-log-servlet)
 [![Coverage Status](https://coveralls.io/repos/stackify/stackify-log-servlet/badge.png?branch=master)](https://coveralls.io/r/stackify/stackify-log-servlet?branch=master)
 
-TODO
+This project contains J2EE and JAXRS servlet filters for capturing web request details that will be attached to log messages that you send to Stackify. 
 
 Error Logging and Monitoring Overview:
 
@@ -17,9 +17,64 @@ Sign Up for a Trial:
 
 http://www.stackify.com/sign-up/
 
-## Usage
+stackify-log-servlet needs to be used in conjection with one of our java logging libraries.
+- https://github.com/stackify/stackify-log-log4j12 (version 1.0.5 or greater)
+- https://github.com/stackify/stackify-log-logback (version 1.0.5 or greater)
 
-TODO
+The web request details will be attached to exceptions that are sent to Stackify. Here are the details that we will capture:
+- User
+- User IP address
+- Server name
+- Request protocol
+- Request method (GET, POST, PUT, DELETE)
+- Request URL
+- Referral URL
+- HTTP headers
+- HTTP cookies (names only)
+- HTTP session attributes (names only)
+- Query string parameters
+
+Note: *We do not currently capture any details from the POST/PUT body.*
+
+In addition to the web request details, we will also generate a transaction id in the filter. This transaction id will be added to all messages that are logged from that request thread. This gives you an easy way to identify all messages that were logged from the same request.
+
+## J2EE Servlet Usage
+
+Add the StackifyLogFilter servlet filter and mapping to the web-app element in your web.xml file.
+
+```xml
+<web-app>
+...
+    <filter>
+        <filter-name>StackifyLogFilter</filter-name>
+        <filter-class>com.stackify.log.servlet.StackifyLogFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>StackifyLogFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+...
+</web-app>
+```
+
+## Jersey Servlet Usage
+
+Add the StackifyLogFilter servlet filter to the servlet element in your web.xml file.
+
+```xml
+<servlet>
+    ...
+    <init-param>
+        <param-name>jersey.config.server.provider.classnames</param-name>
+        <param-value>com.stackify.log.servlet.jaxrs.StackifyLogFilter</param-value>
+    </init-param>
+    ...
+</servlet>
+```
+
+Note: *This will only work with Jersey >= version 2.4 because of the following bug:*
+- https://java.net/jira/browse/JERSEY-1960.
 
 ## Installation
 
