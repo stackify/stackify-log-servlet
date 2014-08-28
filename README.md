@@ -17,7 +17,7 @@ Sign Up for a Trial:
 
 http://www.stackify.com/sign-up/
 
-stackify-log-servlet needs to be used in conjection with one of our java logging libraries.
+stackify-log-servlet needs to be used in conjunction with one of our java logging libraries.
 - https://github.com/stackify/stackify-log-log4j12 (version 1.0.5 or greater)
 - https://github.com/stackify/stackify-log-logback (version 1.0.5 or greater)
 
