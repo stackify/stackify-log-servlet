@@ -5,13 +5,9 @@
 
 This project contains J2EE and JAX-RS servlet filters for capturing web request details that will be attached to log messages that you send to Stackify. 
 
-Error Logging and Monitoring Overview:
+Errors and Logs Overview:
 
-http://docs.stackify.com/s/3095/m/7787/l/189767-error-logging-and-monitoring-overview
-
-Logging Overview:
-
-http://docs.stackify.com/s/3095/m/7787/l/226390-log-aggregation-beta
+http://docs.stackify.com/m/7787/l/189767
 
 Sign Up for a Trial:
 
