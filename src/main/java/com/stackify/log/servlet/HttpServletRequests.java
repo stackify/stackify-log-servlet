@@ -46,7 +46,7 @@ public class HttpServletRequests {
 				
 		wrdBuilder.userIpAddress(request.getRemoteAddr());
 		wrdBuilder.requestProtocol(request.getProtocol());
-		wrdBuilder.requestUrlRoot(request.getServerName());
+		wrdBuilder.requestUrlRoot(request.getRequestURI());
 		
 		wrdBuilder.httpMethod(request.getMethod());
 		

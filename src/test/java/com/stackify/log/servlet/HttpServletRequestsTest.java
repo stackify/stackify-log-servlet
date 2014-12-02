@@ -53,10 +53,10 @@ public class HttpServletRequestsTest {
 	@Test
 	public void testRequestUrlRoot() {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-		Mockito.when(request.getServerName()).thenReturn("localhost");
+		Mockito.when(request.getRequestURI()).thenReturn("/path/something");
 		
 		WebRequestDetail wrd = HttpServletRequests.getWebRequest(request);
-		Assert.assertEquals("localhost", wrd.getRequestUrlRoot());
+		Assert.assertEquals("/path/something", wrd.getRequestUrlRoot());
 	}
 	
 	/**
