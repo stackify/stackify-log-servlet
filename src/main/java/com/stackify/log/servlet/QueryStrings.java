@@ -6,10 +6,10 @@ package com.stackify.log.servlet;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
+import com.stackify.api.common.util.Preconditions;
 
 /**
  * QueryStrings
@@ -25,7 +25,7 @@ public class QueryStrings {
 	public static Map<String, String> toMap(final String queryString) {
 		Preconditions.checkNotNull(queryString);
 
-		Map<String, String> queryMap = Maps.newHashMap();
+		Map<String, String> queryMap = new HashMap<String, String>();
 
 		String decoded = queryString;
 		

@@ -5,29 +5,21 @@
 package com.stackify.log.servlet;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Maps;
 import com.stackify.api.WebRequestDetail;
+import com.stackify.api.common.util.Preconditions;
 
 /**
  * HttpServletRequests
  * @author Eric Martin
  */
 public class HttpServletRequests {
-	
-	/**
-	 * Comma Joiner
-	 */
-	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 	
 	/**
 	 * Value Mask
@@ -58,22 +50,22 @@ public class HttpServletRequests {
 		
 		wrdBuilder.referralUrl(request.getHeader("referer"));
 		
-		Optional<Map<String, String>> headers = getHeaders(request);
+		Map<String, String> headers = getHeaders(request);
 		
-		if (headers.isPresent()) {
-			wrdBuilder.headers(headers.get());
+		if (headers != null) {
+			wrdBuilder.headers(headers);
 		}
 				
-		Optional<Map<String, String>> cookies = getCookies(request);
+		Map<String, String> cookies = getCookies(request);
 
-		if (cookies.isPresent()) {
-			wrdBuilder.cookies(cookies.get());
+		if (cookies != null) {
+			wrdBuilder.cookies(cookies);
 		}
 
-		Optional<Map<String, String>> sessionAttributes = getSessionAttributes(request);
+		Map<String, String> sessionAttributes = getSessionAttributes(request);
 
-		if (sessionAttributes.isPresent()) {
-			wrdBuilder.sessionData(sessionAttributes.get());
+		if (sessionAttributes != null) {
+			wrdBuilder.sessionData(sessionAttributes);
 		}
 		
 		String queryString = request.getQueryString();
@@ -92,7 +84,7 @@ public class HttpServletRequests {
 	 * @param request The HTTP servlet request
 	 * @return Map from header name to value
 	 */
-	private static Optional<Map<String, String>> getHeaders(final HttpServletRequest request) {
+	private static Map<String, String> getHeaders(final HttpServletRequest request) {
 		Preconditions.checkNotNull(request);
 
 		@SuppressWarnings("unchecked")
@@ -100,7 +92,7 @@ public class HttpServletRequests {
 		
 		if ((headerNames != null) && (headerNames.hasMoreElements())) {
 			
-			Map<String, String> headerMap = Maps.newHashMap();
+			Map<String, String> headerMap = new HashMap<String, String>();
 			
 			while (headerNames.hasMoreElements()) {
 				
@@ -117,17 +109,32 @@ public class HttpServletRequests {
 					
 					if (values != null) {
 						
-						String combinedValues = COMMA_JOINER.join(Iterators.forEnumeration(values));
+						StringBuilder sb = new StringBuilder();
 						
+						while (values.hasMoreElements()) {
+							
+							String value = values.nextElement();
+							
+							if (value != null) {
+								sb.append(value);
+								
+								if (values.hasMoreElements()) {
+									sb.append(",");
+								}
+							}
+						}
+						
+						String combinedValues = sb.toString();
+												
 						headerMap.put(name, combinedValues);
 					}
 				}
 			}
 			
-			return Optional.of(headerMap);
+			return headerMap;
 		}
 		
-		return Optional.absent();
+		return null;
 	}
 	
 	/**
@@ -135,14 +142,14 @@ public class HttpServletRequests {
 	 * @param request The HTTP servlet request
 	 * @return Map from cookie name to masked value
 	 */
-	private static Optional<Map<String, String>> getCookies(final HttpServletRequest request) {
+	private static Map<String, String> getCookies(final HttpServletRequest request) {
 		Preconditions.checkNotNull(request);
 
 		Cookie[] cookies = request.getCookies();
 		
 		if ((cookies != null) && (0 < cookies.length)) {
 			
-			Map<String, String> cookieMap = Maps.newHashMap();
+			Map<String, String> cookieMap = new HashMap<String, String>();
 			
 			for (int i = 0; i < cookies.length; ++i) {
 				Cookie cookie = cookies[i];				
@@ -150,10 +157,10 @@ public class HttpServletRequests {
 				cookieMap.put(name, MASKED);
 			}
 
-			return Optional.of(cookieMap);
+			return cookieMap;
 		}
 		
-		return Optional.absent();
+		return null;
 	}
 	
 	/**
@@ -161,7 +168,7 @@ public class HttpServletRequests {
 	 * @param request The HTTP servlet request
 	 * @return Map from session attribute name to masked value
 	 */
-	private static Optional<Map<String, String>> getSessionAttributes(final HttpServletRequest request) {
+	private static Map<String, String> getSessionAttributes(final HttpServletRequest request) {
 		Preconditions.checkNotNull(request);
 
 		HttpSession session = request.getSession(false);
@@ -173,18 +180,18 @@ public class HttpServletRequests {
 			
 			if ((attributeNames != null) && (attributeNames.hasMoreElements())) {
 				
-				Map<String, String> attributeMap = Maps.newHashMap();
+				Map<String, String> attributeMap = new HashMap<String, String>();
 				
 				while (attributeNames.hasMoreElements()) {
 					String name = attributeNames.nextElement();
 					attributeMap.put(name, MASKED);
 				}
 				
-				return Optional.of(attributeMap);
+				return attributeMap;
 			}			
 		}
 		
-		return Optional.absent();
+		return null;
 	}
 	
 	/**

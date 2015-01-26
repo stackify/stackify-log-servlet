@@ -4,7 +4,9 @@
  */
 package com.stackify.log.servlet;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +16,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.google.common.collect.Lists;
 import com.stackify.api.WebRequestDetail;
 
 /**
@@ -101,13 +102,26 @@ public class HttpServletRequestsTest {
 	@Test
 	public void testHeaders() {
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-		Mockito.when(request.getHeaderNames()).thenReturn(Collections.enumeration(Lists.newArrayList("cookie", "h")));
+		
+		List<String> headerNames = new ArrayList<String>();
+		headerNames.add("cookie");
+		headerNames.add("h");
+		headerNames.add("multitest");
+		
+		Mockito.when(request.getHeaderNames()).thenReturn(Collections.enumeration(headerNames));
 		Mockito.when(request.getHeaders("h")).thenReturn(Collections.enumeration(Collections.singletonList("v")));
 
+		List<String> multitest = new ArrayList<String>();
+		multitest.add("a");
+		multitest.add("b");
+		multitest.add("c");
+		Mockito.when(request.getHeaders("multitest")).thenReturn(Collections.enumeration(multitest));
+
 		WebRequestDetail wrd = HttpServletRequests.getWebRequest(request);		
-		Assert.assertEquals(2, wrd.getHeaders().size());
+		Assert.assertEquals(3, wrd.getHeaders().size());
 		Assert.assertEquals("X-MASKED-X", wrd.getHeaders().get("cookie"));
 		Assert.assertEquals("v", wrd.getHeaders().get("h"));
+		Assert.assertEquals("a,b,c", wrd.getHeaders().get("multitest"));
 	}
 	
 	/**
