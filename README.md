@@ -1,5 +1,6 @@
 # stackify-log-servlet
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.stackify/stackify-log-servlet.svg)](http://mvnrepository.com/artifact/com.stackify/stackify-log-servlet)
 [![Build Status](https://travis-ci.org/stackify/stackify-log-servlet.png)](https://travis-ci.org/stackify/stackify-log-servlet)
 [![Coverage Status](https://coveralls.io/repos/stackify/stackify-log-servlet/badge.png?branch=master)](https://coveralls.io/r/stackify/stackify-log-servlet?branch=master)
 
