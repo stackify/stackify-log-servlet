@@ -35,6 +35,17 @@ Note: *We do not currently capture any details from the POST/PUT body.*
 
 In addition to the web request details, we will also generate a transaction id in the filter. This transaction id will be added to all messages that are logged from that request thread. This gives you an easy way to identify all messages that were logged from the same request.
 
+## Installation
+
+Add it as a maven dependency:
+```xml
+<dependency>
+    <groupId>com.stackify</groupId>
+    <artifactId>stackify-log-servlet</artifactId>
+    <version>INSERT_LATEST_MAVEN_CENTRAL_VERSION</version>
+</dependency>
+```
+
 ## J2EE Servlet Usage
 
 Add the StackifyLogFilter servlet filter and mapping to the web-app element in your web.xml file.
@@ -72,17 +83,6 @@ Add the StackifyLogFilter servlet filter to the servlet element in your web.xml 
 
 Jersey Note: *This will only work with Jersey >= version 2.4 because of the following bug:*
 - https://java.net/jira/browse/JERSEY-1960.
-
-## Installation
-
-Add it as a maven dependency:
-```xml
-<dependency>
-    <groupId>com.stackify</groupId>
-    <artifactId>stackify-log-servlet</artifactId>
-    <version>1.1.0</version>
-</dependency>
-```
 
 ## License
 
