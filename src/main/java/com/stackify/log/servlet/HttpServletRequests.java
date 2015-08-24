@@ -4,9 +4,7 @@
  */
 package com.stackify.log.servlet;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +23,24 @@ public class HttpServletRequests {
 	 * Value Mask
 	 */
 	private static final String MASKED = "X-MASKED-X";
+
+    /**
+     * Value Mask set
+     */
+	private static final Set<String> MASKED_SET = initializeMaskSet();
+    
+    /**
+     * Returns an initialized set with all headers that need to be masked.
+     * @return Initialized Set of Header Key Names
+     */
+    public static Set<String> initializeMaskSet() {
+        Set<String> maskSet = new HashSet<String>();
+
+        maskSet.add("cookie");
+        maskSet.add("authorization");
+
+        return maskSet;
+    }
 	
 	/**
 	 * Gets a WebRequestDetail from the servlet request
@@ -98,7 +114,7 @@ public class HttpServletRequests {
 				
 				String name = headerNames.nextElement();
 				
-				if (name.equalsIgnoreCase("cookie")) {
+				if (MASKED_SET.contains(name)) {
 					
 					headerMap.put(name, MASKED);
 					
