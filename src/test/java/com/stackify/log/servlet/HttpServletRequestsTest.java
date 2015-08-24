@@ -7,6 +7,7 @@ package com.stackify.log.servlet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -105,6 +106,7 @@ public class HttpServletRequestsTest {
 		
 		List<String> headerNames = new ArrayList<String>();
 		headerNames.add("cookie");
+		headerNames.add("authorization");
 		headerNames.add("h");
 		headerNames.add("multitest");
 		
@@ -118,11 +120,24 @@ public class HttpServletRequestsTest {
 		Mockito.when(request.getHeaders("multitest")).thenReturn(Collections.enumeration(multitest));
 
 		WebRequestDetail wrd = HttpServletRequests.getWebRequest(request);		
-		Assert.assertEquals(3, wrd.getHeaders().size());
+		Assert.assertEquals(4, wrd.getHeaders().size());
 		Assert.assertEquals("X-MASKED-X", wrd.getHeaders().get("cookie"));
+		Assert.assertEquals("X-MASKED-X", wrd.getHeaders().get("authorization"));
 		Assert.assertEquals("v", wrd.getHeaders().get("h"));
 		Assert.assertEquals("a,b,c", wrd.getHeaders().get("multitest"));
 	}
+
+    /**
+     * testHeaderMaskSet
+     */
+    @Test
+    public void testHeaderMaskSet() {
+        Set<String> maskSet = HttpServletRequests.initializeMaskSet();
+
+        Assert.assertEquals(2, maskSet.size());
+        Assert.assertTrue(maskSet.contains("cookie"));
+        Assert.assertTrue(maskSet.contains("authorization"));
+    }
 	
 	/**
 	 * testCookies

@@ -4,9 +4,6 @@
  */
 package com.stackify.log.servlet;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +11,12 @@ import javax.servlet.http.HttpSession;
 
 import com.stackify.api.WebRequestDetail;
 import com.stackify.api.common.util.Preconditions;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * HttpServletRequests
@@ -25,6 +28,24 @@ public class HttpServletRequests {
 	 * Value Mask
 	 */
 	private static final String MASKED = "X-MASKED-X";
+
+    /**
+     * Value Mask set
+     */
+	private static final Set<String> MASKED_SET = initializeMaskSet();
+
+    /**
+     * Returns an initialized set with all headers that need to be masked.
+     * @return Initialized Set of Header Key Names
+     */
+    public static Set<String> initializeMaskSet() {
+        Set<String> maskSet = new HashSet<String>();
+
+        maskSet.add("cookie");
+        maskSet.add("authorization");
+
+        return maskSet;
+    }
 	
 	/**
 	 * Gets a WebRequestDetail from the servlet request
@@ -88,7 +109,7 @@ public class HttpServletRequests {
 		Preconditions.checkNotNull(request);
 
 		@SuppressWarnings("unchecked")
-		Enumeration<String> headerNames = request.getHeaderNames();
+        Enumeration<String> headerNames = request.getHeaderNames();
 		
 		if ((headerNames != null) && (headerNames.hasMoreElements())) {
 			
@@ -98,7 +119,7 @@ public class HttpServletRequests {
 				
 				String name = headerNames.nextElement();
 				
-				if (name.equalsIgnoreCase("cookie")) {
+				if (MASKED_SET.contains(name)) {
 					
 					headerMap.put(name, MASKED);
 					
