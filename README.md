@@ -8,7 +8,7 @@ This project contains J2EE and JAX-RS servlet filters for capturing web request 
 
 Errors and Logs Overview:
 
-http://support.stackify.com/hc/en-us/articles/205419435-Errors-and-Logs-Overview
+http://support.stackify.com/errors-and-logs-overview/
 
 Sign Up for a Trial:
 
